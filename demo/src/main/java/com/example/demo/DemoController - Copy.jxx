@@ -1,0 +1,34 @@
+package com.example.demo;
+
+import com.example.utils.NameBuilder;
+import com.example.utils.NamePrinter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class DemoController {
+
+    @Value("${app.default.firstName}")
+    private String firstName;
+
+    // Autowire NameBuilder
+    private final NameBuilder nameBuilder;
+
+    @Autowired
+    public DemoController(NameBuilder nameBuilder) {
+        this.nameBuilder = nameBuilder;
+    }
+
+    @GetMapping("/api/print-name")
+    public String printName() {
+        // Use the autowired NameBuilder instead of manually creating it
+        String name = nameBuilder.withFirstName("John").withLastName("Doe").build();
+
+        NamePrinter printer = new NamePrinter();
+        printer.printName(name);
+
+        return "Printed Name: " + name + " name from config: " + firstName;
+    }
+}

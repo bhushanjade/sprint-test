@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: demo
+
+app:
+  default:
+    firstName: Jane
+    lastName: Smith
+
+feature:
+  fp: true
